@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "604699240014",
+    "firebase_url": "https://nxdiary.firebaseio.com",
+    "project_id": "nxdiary",
+    "storage_bucket": "nxdiary.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:604699240014:android:fb73d30e879af27e",
+        "android_client_info": {
+          "package_name": "com.nithun.app.firediary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "604699240014-j1ph3ikvfg906lq855mqa7hsvn5a8hgg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nithun.app.firediary",
+            "certificate_hash": "3A6DB3DC57C188AE852AF3F596BE17EA6C75501B"
+          }
+        },
+        {
+          "client_id": "604699240014-a0il4qedtkbvve1e32ccoqhrslan9n2p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUvImON50F_4YpfsPDQrxGdLhJsjT1GcM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "604699240014-a0il4qedtkbvve1e32ccoqhrslan9n2p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
