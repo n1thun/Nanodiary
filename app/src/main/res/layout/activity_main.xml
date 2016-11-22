@@ -19,7 +19,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/emailField"
-        android:hint="Enter E-mail"
+        android:hint="E-mail"
         android:layout_marginTop="100dp"
         android:fontFamily="monospace" />
 
@@ -32,7 +32,7 @@
         android:layout_alignEnd="@+id/emailField"
         android:layout_marginTop="30dp"
         android:id="@+id/passwordField"
-        android:hint="Enter Password"
+        android:hint="Password"
         android:fontFamily="monospace" />
 
     <Button
