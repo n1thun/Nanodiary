@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -9,18 +10,29 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.nithun.app.firediary.MainActivity"
-    android:padding="30dp">
+    android:padding="30dp"
+    android:background="@android:color/background_light">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/logo"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/imageView2"
+        android:minHeight="@android:dimen/thumbnail_height"
+        android:minWidth="@android:dimen/thumbnail_height"
+        android:layout_margin="0dp" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/imageView2"
         android:layout_centerHorizontal="true"
         android:id="@+id/emailField"
         android:hint="E-mail"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="monospace" />
 
     <EditText
@@ -30,7 +42,7 @@
         android:ems="10"
         android:layout_below="@+id/emailField"
         android:layout_alignEnd="@+id/emailField"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:id="@+id/passwordField"
         android:hint="Password"
         android:fontFamily="monospace" />
@@ -41,6 +53,22 @@
         android:layout_height="wrap_content"
         android:id="@+id/loginBtn"
         android:layout_below="@+id/passwordField"
+        android:layout_marginTop="30dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/btn_generic"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="25dp" />
+        android:fontFamily="monospace" />
+
+    <Button
+        android:text="Signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:id="@+id/signupBtn"
+        android:background="@drawable/btn_generic"
+        android:textColor="@android:color/white"
+        android:fontFamily="monospace" />
+
 </RelativeLayout>
