@@ -133,7 +133,7 @@ public class EntryActivity extends AppCompatActivity {
 
             CropImage.activity(mImageUri)
                     .setGuidelines(CropImageView.Guidelines.ON)
-                    .setAspectRatio(2,1)
+                    .setAspectRatio(16,9)
                     .start(this);
 
         }

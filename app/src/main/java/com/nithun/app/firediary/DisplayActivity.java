@@ -18,6 +18,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
 public class DisplayActivity extends AppCompatActivity {
@@ -27,6 +28,7 @@ public class DisplayActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private Query mQueryCurrentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +37,11 @@ public class DisplayActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-
+        String currentUserId = mAuth.getCurrentUser().getUid();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Entries");
+        mDatabase.keepSynced(true);
+
+        mQueryCurrentUser = mDatabase.orderByChild("uid").equalTo(currentUserId);
 
 
         mEntryList = (RecyclerView) findViewById(R.id.entry_list);
@@ -64,7 +69,7 @@ public class DisplayActivity extends AppCompatActivity {
                 Entry.class,
                 R.layout.entry_card,
                 EntryViewHolder.class,
-                mDatabase
+                mQueryCurrentUser
 
         ) {
             @Override
