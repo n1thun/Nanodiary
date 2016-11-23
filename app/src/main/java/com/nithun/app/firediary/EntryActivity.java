@@ -14,6 +14,9 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -32,6 +35,7 @@ public class EntryActivity extends AppCompatActivity {
     private static final int GALLERY_REQUEST = 1;
 
     private StorageReference mStorage;
+    private DatabaseReference mDatabase;
 
     private ProgressDialog mProgress;
 
@@ -41,6 +45,8 @@ public class EntryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_entry);
 
         mStorage = FirebaseStorage.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Entries");
+
 
         mSelectImage = (ImageButton) findViewById(R.id.imgBtn);
         mEntryTitle = (EditText) findViewById(R.id.titleField);
@@ -73,20 +79,29 @@ public class EntryActivity extends AppCompatActivity {
     private void createEntry() {
 
         mProgress.setMessage("Adding to Diary....");
-        mProgress.show();
-        String title_val = mEntryTitle.getText().toString().trim();
-        String content_val = mEntryContent.getText().toString().trim();
+        final String title_val = mEntryTitle.getText().toString().trim();
+        final String content_val = mEntryContent.getText().toString().trim();
 
         if(!TextUtils.isEmpty(title_val) && !TextUtils.isEmpty(content_val) && mImageUri != null){  //Check if all content is provided
+            mProgress.show();
 
-            StorageReference filepath = mStorage.child("Entry_images").child(random()); // Provide Firebase filepath
+            StorageReference filepath = mStorage.child("Entry_images").child(mImageUri.getLastPathSegment()); // Provide Firebase filepath
 
             filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() { //Add file to Firebase
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                     Uri dowloadUri = taskSnapshot.getDownloadUrl(); //Get file url from firebase
+
+                    DatabaseReference newEntry = mDatabase.push();
+
+                    newEntry.child("title").setValue(title_val);
+                    newEntry.child("content").setValue(content_val);
+                    newEntry.child("image").setValue(dowloadUri.toString());
+
                     mProgress.dismiss();
+
+                    startActivity(new Intent(EntryActivity.this, DisplayActivity.class));
 
                 }
             });

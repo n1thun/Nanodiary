@@ -1,20 +1,114 @@
 package com.nithun.app.firediary;
 
+import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 public class DisplayActivity extends AppCompatActivity {
+
+    private RecyclerView mEntryList;
+    private DatabaseReference mDatabase;
+
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
+
+        mAuth = FirebaseAuth.getInstance();
+
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Entries");
+
+
+        mEntryList = (RecyclerView) findViewById(R.id.entry_list);
+        mEntryList.setHasFixedSize(true);
+        mEntryList.setLayoutManager(new LinearLayoutManager(this));
+
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth){
+                if(firebaseAuth.getCurrentUser() == null ){
+                    startActivity(new Intent(DisplayActivity.this, MainActivity.class));
+                }
+            }
+        };
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        mAuth.addAuthStateListener(mAuthListener);
+
+        FirebaseRecyclerAdapter<Entry, EntryViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Entry, EntryViewHolder>(
+                Entry.class,
+                R.layout.entry_card,
+                EntryViewHolder.class,
+                mDatabase
+
+        ) {
+            @Override
+            protected void populateViewHolder(EntryViewHolder viewHolder, Entry model, int position) {
+
+                viewHolder.setTitle(model.getTitle());
+                viewHolder.setContent(model.getContent());
+                viewHolder.setImage(getApplicationContext(), model.getImage());
+            }
+        };
+
+        mEntryList.setAdapter(firebaseRecyclerAdapter);
+    }
+
+    public static class EntryViewHolder extends RecyclerView.ViewHolder{
+
+        View mView;
+
+        public EntryViewHolder(View itemView) {
+            super(itemView);
+
+            mView = itemView;
+        }
+
+        public void setTitle(String title){
+
+            TextView e_title = (TextView) mView.findViewById(R.id.entry_title);
+            e_title.setText(title);
+
+        }
+
+        public void setContent(String content){
+
+            TextView e_content = (TextView) mView.findViewById(R.id.entry_content);
+            e_content.setText(content);
+        }
+
+        public void setImage(Context ctx,String image){
+
+            ImageView e_image = (ImageView) mView.findViewById(R.id.entry_image);
+            Picasso.with(ctx).load(image).into(e_image);
+        }
+
+    }
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -30,7 +124,15 @@ public class DisplayActivity extends AppCompatActivity {
             startActivity(new Intent(DisplayActivity.this, EntryActivity.class));
 
         }
+        if (item.getItemId() == R.id.action_logout){
+            signout();
+
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void signout() {
+        mAuth.signOut();
     }
 }

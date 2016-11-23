@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText mEmailField;
     private EditText mPasswordField;
     private Button mLoginBtn;
+    private Button mSignup;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         mPasswordField = (EditText) findViewById(R.id.passwordField);
 
         mLoginBtn = (Button) findViewById(R.id.loginBtn);
+        mSignup = (Button) findViewById(R.id.signupBtn);
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -52,7 +54,37 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSignup();
+            }
+        });
+    }
 
+    private void startSignup() {
+
+        String email = mEmailField.getText().toString();
+        String password = mPasswordField.getText().toString();
+
+        if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){
+
+            Toast.makeText(MainActivity.this, "Fields are empty", Toast.LENGTH_LONG).show();
+        }
+        else {
+            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (!task.isSuccessful()){
+
+                        onStart();
+
+
+                    }
+                }
+            });
+
+        }
 
     }
 

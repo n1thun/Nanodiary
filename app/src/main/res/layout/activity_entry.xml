@@ -25,13 +25,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="Title..."
             android:ems="10"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
@@ -40,7 +41,8 @@
             android:padding="15dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:hint="Title..." />
 
         <EditText
             android:layout_width="match_parent"
@@ -50,11 +52,11 @@
             android:layout_marginTop="20dp"
             android:id="@+id/contentField"
             android:layout_below="@+id/titleField"
-            android:text="Content..."
             android:background="@drawable/input_outline"
             android:padding="15dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="10dp"
+            android:hint="Content..." />
 
         <Button
             android:text="Add"
@@ -65,7 +67,8 @@
             android:layout_centerHorizontal="true"
             android:background="@drawable/btn_generic"
             android:textColor="@android:color/white"
-            android:layout_margin="5dp" />
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="20dp" />
 
     </RelativeLayout>
 </RelativeLayout>
