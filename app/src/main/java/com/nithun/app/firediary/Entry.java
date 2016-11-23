@@ -6,16 +6,26 @@ package com.nithun.app.firediary;
 
 public class Entry {
 
-    private String title, content, image;
+    private String title, content, image, date;
+
+
+
+    public Entry(String title, String content, String image, String date) {
+        this.title = title;
+        this.content = content;
+        this.image = image;
+        this.date = date;
+    }
 
     public Entry(){
 
     }
+    public void setDate(String date) {
 
-    public Entry(String title, String content, String image) {
-        this.title = title;
-        this.content = content;
-        this.image = image;
+        this.date = date;
+    }
+    public String getDate() {
+        return date;
     }
 
     public String getTitle() {

@@ -72,6 +72,7 @@ public class DisplayActivity extends AppCompatActivity {
 
                 viewHolder.setTitle(model.getTitle());
                 viewHolder.setContent(model.getContent());
+                viewHolder.setDate(model.getDate());
                 viewHolder.setImage(getApplicationContext(), model.getImage());
             }
         };
@@ -100,6 +101,12 @@ public class DisplayActivity extends AppCompatActivity {
 
             TextView e_content = (TextView) mView.findViewById(R.id.entry_content);
             e_content.setText(content);
+        }
+
+        public void setDate(String date){
+
+            TextView e_date = (TextView) mView.findViewById(R.id.entry_date);
+            e_date.setText(date);
         }
 
         public void setImage(Context ctx,String image){

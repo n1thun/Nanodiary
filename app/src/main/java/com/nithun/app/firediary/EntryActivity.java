@@ -15,20 +15,24 @@ import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.Date;
 import java.util.Random;
 
 public class EntryActivity extends AppCompatActivity {
 
     private ImageButton mSelectImage;
     private EditText mEntryTitle;
-    private  EditText mEntryContent;
-    private Button mAddEntryBtn;
+    private EditText mEntryContent;
+        private Button mAddEntryBtn;
 
     private Uri mImageUri = null;
 
@@ -38,11 +42,17 @@ public class EntryActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
 
     private ProgressDialog mProgress;
+    private FirebaseAuth mAuth;
+    private FirebaseUser mCurrentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry);
+
+        mAuth = FirebaseAuth.getInstance();
+        mCurrentUser = mAuth.getCurrentUser();
+
 
         mStorage = FirebaseStorage.getInstance().getReference();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Entries");
@@ -59,8 +69,8 @@ public class EntryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                Intent galleryIntent = new Intent();
+                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
                 galleryIntent.setType("image/*");
                 startActivityForResult(galleryIntent, GALLERY_REQUEST);
 
@@ -98,6 +108,8 @@ public class EntryActivity extends AppCompatActivity {
                     newEntry.child("title").setValue(title_val);
                     newEntry.child("content").setValue(content_val);
                     newEntry.child("image").setValue(dowloadUri.toString());
+                    newEntry.child("uid").setValue(mCurrentUser.getUid());
+                    newEntry.child("date").setValue(new Date().toString().substring(0, 10) + new Date().toString().substring(23, 28));
 
                     mProgress.dismiss();
 
@@ -119,8 +131,23 @@ public class EntryActivity extends AppCompatActivity {
 
             mImageUri = data.getData();
 
-            mSelectImage.setImageURI(mImageUri);
+            CropImage.activity(mImageUri)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(2,1)
+                    .start(this);
 
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+
+                mSelectImage.setImageURI(resultUri);
+                mImageUri = resultUri;
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
         }
     }
 

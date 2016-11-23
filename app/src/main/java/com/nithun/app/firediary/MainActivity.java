@@ -75,9 +75,14 @@ public class MainActivity extends AppCompatActivity {
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()){
+
+                        Toast.makeText(MainActivity.this, "Sign up successful", Toast.LENGTH_LONG).show();
+
+                    }
                     if (!task.isSuccessful()){
 
-                        onStart();
+                        Toast.makeText(MainActivity.this, "There was a problem Signing up", Toast.LENGTH_LONG).show();
 
 
                     }
